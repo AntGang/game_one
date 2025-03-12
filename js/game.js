@@ -12,11 +12,11 @@ let timer = 0;
 let gameInterval;
 let isProcessing = false;
 
-// 音效
+// 音效（狗叫声）
 const sounds = {
-    flip: new Audio('https://assets.mixkit.co/active_storage/sfx/2073/2073-preview.mp3'),
-    match: new Audio('https://assets.mixkit.co/active_storage/sfx/2/2-preview.mp3'),
-    victory: new Audio('https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3')
+    flip: new Audio('https://assets.mixkit.co/active_storage/sfx/1018/1018-preview.mp3'), // 短促的狗叫
+    match: new Audio('https://assets.mixkit.co/active_storage/sfx/1017/1017-preview.mp3'), // 欢快的狗叫
+    victory: new Audio('https://assets.mixkit.co/active_storage/sfx/1014/1014-preview.mp3') // 持续的狗叫
 };
 
 // 音效开关状态
