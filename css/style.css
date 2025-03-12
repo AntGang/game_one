@@ -1,195 +1,138 @@
-body {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    position: relative;
-    overflow: hidden;
+    padding: 20px;
 }
 
-/* 场景背景 */
-.scene-background {
-    position: fixed;
-    top: 0;
-    left: 0;
+.game-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    width: 100%;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.card {
+    aspect-ratio: 3/4;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.card-inner {
+    position: relative;
     width: 100%;
     height: 100%;
-    z-index: -1;
-    background: linear-gradient(135deg, #1a472a, #2d5a3f, #3a6b4f);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-}
-
-/* 添加森林元素 */
-.scene-background::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 30%;
-    background: repeating-linear-gradient(
-        90deg,
-        #0f2e1a,
-        #0f2e1a 10px,
-        #143820 10px,
-        #143820 20px
-    );
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300'%3E%3Cpath d='M0,300 L1000,300 L1000,150 C900,180 850,120 800,150 C750,180 700,120 650,150 C600,180 550,120 500,150 C450,180 400,120 350,150 C300,180 250,120 200,150 C150,180 100,120 50,150 C0,180 0,150 0,150 Z' fill='black'/%3E%3C/svg%3E");
-    mask-size: cover;
-    mask-position: bottom;
-}
-
-/* 添加天空中的云朵 */
-.scene-background::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3) 10px, transparent 30px),
-        radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.3) 15px, transparent 35px),
-        radial-gradient(circle at 40% 10%, rgba(255, 255, 255, 0.3) 8px, transparent 25px),
-        radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.3) 12px, transparent 30px);
-}
-
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.container {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    max-width: 600px;
-    width: 90%;
-    position: relative;
-    z-index: 1;
-    border: 3px solid #2c3e50;
-}
-
-h1 {
     text-align: center;
-    color: #2c3e50;
-    font-size: 2.2em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    margin-top: 0;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
 }
 
-/* 角色容器 */
-.character-container {
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
-    margin: 20px 0;
-    min-height: 150px;
-    position: relative;
+    align-items: center;
 }
 
-/* 角色基础样式 */
-.character {
-    width: 120px;
-    height: 150px;
-    position: absolute;
-    transition: all 0.5s ease;
+.card-front {
+    background: #2c3e50;
+    color: white;
+    font-size: 2em;
 }
 
-/* 冒险者角色 */
-.adventurer {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3C!-- 头部 --%3E%3Ccircle cx='50' cy='30' r='20' fill='%23ffd699'/%3E%3C!-- 帽子 --%3E%3Cpath d='M30,30 Q50,10 70,30' stroke='%23654321' stroke-width='5' fill='none'/%3E%3C!-- 眼睛 --%3E%3Ccircle cx='42' cy='25' r='3' fill='%23000'/%3E%3Ccircle cx='58' cy='25' r='3' fill='%23000'/%3E%3C!-- 嘴巴 --%3E%3Cpath d='M45,40 Q50,45 55,40' stroke='%23000' stroke-width='2' fill='none'/%3E%3C!-- 身体 --%3E%3Crect x='40' y='50' width='20' height='30' fill='%233498db'/%3E%3C!-- 腿 --%3E%3Crect x='43' y='80' width='6' height='25' fill='%23000'/%3E%3Crect x='51' y='80' width='6' height='25' fill='%23000'/%3E%3C!-- 手臂 --%3E%3Crect x='30' y='55' width='10' height='5' fill='%23ffd699'/%3E%3Crect x='60' y='55' width='10' height='5' fill='%23ffd699'/%3E%3C/svg%3E") no-repeat center;
-    left: 50%;
-    transform: translateX(-50%);
+.card-back {
+    background: white;
+    border: 2px solid #2c3e50;
+    transform: rotateY(180deg);
 }
 
-/* 水晶角色 */
-.crystal {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3C!-- 水晶主体 --%3E%3Cpolygon points='50,20 30,50 50,100 70,50' fill='%2387CEFA' fill-opacity='0.7'/%3E%3C!-- 水晶光芒 --%3E%3Cpath d='M50,20 L55,10 M50,20 L45,10 M50,20 L60,15 M50,20 L40,15' stroke='%23ADD8E6' stroke-width='2'/%3E%3C!-- 水晶内部纹理 --%3E%3Cpath d='M40,40 L60,40 M40,60 L60,60 M40,80 L60,80' stroke='%23FFFFFF' stroke-width='1' stroke-opacity='0.5'/%3E%3C!-- 水晶闪光 --%3E%3Ccircle cx='45' cy='35' r='3' fill='%23FFFFFF' fill-opacity='0.8'/%3E%3Ccircle cx='55' cy='65' r='2' fill='%23FFFFFF' fill-opacity='0.6'/%3E%3C/svg%3E") no-repeat center;
-    left: 65%;
+.card-back img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
 }
 
-/* 小鹿角色 */
-.deer {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3C!-- 鹿身体 --%3E%3Cellipse cx='50' cy='70' rx='25' ry='15' fill='%23D2B48C'/%3E%3C!-- 鹿头 --%3E%3Ccircle cx='75' cy='60' r='10' fill='%23D2B48C'/%3E%3C!-- 鹿角 --%3E%3Cpath d='M75,50 L80,40 L85,45 M75,50 L70,40 L65,45' stroke='%23A0522D' stroke-width='2' fill='none'/%3E%3C!-- 眼睛 --%3E%3Ccircle cx='78' cy='57' r='2' fill='%23000'/%3E%3C!-- 鹿腿 --%3E%3Cpath d='M35,70 L35,90 M45,70 L45,90 M55,70 L55,90 M65,70 L65,90' stroke='%23D2B48C' stroke-width='3'/%3E%3C!-- 鹿尾巴 --%3E%3Ccircle cx='25' cy='70' r='5' fill='%23FFF'/%3E%3C/svg%3E") no-repeat center;
-    left: 25%;
-}
-
-/* 隐藏元素 */
-.hidden {
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-#story-content {
-    margin-bottom: 20px;
-    line-height: 1.6;
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 15px;
-    border-radius: 10px;
-    border: 2px dashed #3498db;
-    font-size: 1.1em;
-}
-
-#options-container {
+.controls {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    justify-content: center;
+    gap: 10px;
 }
 
-.option-btn {
-    background-color: #3498db;
+.control-btn {
+    padding: 10px 20px;
+    font-size: 1.1em;
+    background: #3498db;
     color: white;
     border: none;
-    padding: 12px 18px;
-    border-radius: 8px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s;
-    font-family: inherit;
-    font-size: 1em;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 4px 0 #2980b9;
+    transition: background-color 0.3s;
 }
 
-.option-btn:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 #1c638d;
+.control-btn:hover {
+    background: #2980b9;
 }
 
-.option-btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 #2980b9;
+.sound-tip {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
 }
 
-@media (max-width: 480px) {
-    .container {
-        width: 95%;
-        padding: 15px;
+.card.matched {
+    visibility: hidden;
+}
+
+@media (max-width: 600px) {
+    .game-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
 
-    h1 {
-        font-size: 1.8em;
+    .game-board {
+        grid-template-columns: repeat(3, 1fr);
     }
+}
 
-    .character {
-        width: 80px;
-        height: 100px;
-    }
-
-    #story-content {
-        font-size: 0.95em;
-    }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
