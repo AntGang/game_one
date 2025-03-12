@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魔法森林冒险</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="scene-background"></div>
+    <div class="container">
+        <div id="story-container">
+            <h1>魔法森林冒险</h1>
+            <div class="character-container">
+                <div class="character adventurer"></div>
+                <div class="character crystal hidden"></div>
+                <div class="character deer hidden"></div>
+            </div>
+            <div id="story-content">
+                <p>欢迎来到这片神秘的魔法森林！</p>
+                <p>在这里，你的每一个选择都将引领你走向不同的冒险。</p>
+                <p>你准备好开始这段奇妙的旅程了吗？</p>
+            </div>
+            <div id="options-container">
+                <button class="option-btn" onclick="startStory()">开始冒险</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/story.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
