@@ -3,24 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>翻牌配对游戏-journey</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>上海周末一日游规划表</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            padding: 10mm;
+            box-sizing: border-box;
+            color: #333;
+            background-color: #fff;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .header h1 {
+            color: #4CAF50;
+            margin: 0;
+            font-size: 28px;
+        }
+        .header .subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .section {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .section-title {
+            font-weight: 700;
+            color: #4CAF50;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .timeline {
+            margin-top: 10px;
+        }
+        .timeline-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .timeline-time {
+            font-weight: 500;
+            min-width: 80px;
+            color: #2196F3;
+        }
+        .timeline-content {
+            flex: 1;
+        }
+        .icon {
+            margin-right: 5px;
+            color: #4CAF50;
+        }
+        .transport-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .transport-table th, .transport-table td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: left;
+        }
+        .transport-table th {
+            background-color: #f2f2f2;
+        }
+        .tips-list {
+            padding-left: 20px;
+        }
+        .print-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        @media print {
+            .print-btn {
+                display: none;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="game-header">
-            <div class="score">配对数: <span id="matches">0</span></div>
-            <div class="moves">步数: <span id="moves">0</span></div>
-            <div class="timer">时间: <span id="timer">0</span>秒</div>
+    <div class="header">
+        <h1>上海周末一日游规划表</h1>
+        <div class="subtitle">昌邑路站 & 浦江镇站 | 高德版周末攻略</div>
+    </div>
+
+    <div class="grid-container">
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-map-marked-alt icon"></i>行程概览</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">09:30-11:30</div>
+                    <div class="timeline-content">
+                        <strong>世博文化公园</strong><br>
+                        <i class="fas fa-map-marker-alt"></i> 济坤路100号
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">12:00-13:30</div>
+                    <div class="timeline-content">
+                        <strong>午餐</strong><br>
+                        <i class="fas fa-utensils"></i> 麦当劳(龙阳路店)
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">14:00-17:00</div>
+                    <div class="timeline-content">
+                        <strong>上海植物园</strong><br>
+                        <i class="fas fa-map-marker-alt"></i> 龙吴路1111号
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="game-board" id="gameBoard"></div>
-        <div class="controls">
-            <button id="restartBtn" class="control-btn">重新开始</button>
-        </div>
-        <div class="sound-tip">
-            <p>提示：如果听不到音效，请检查浏览器设置是否允许自动播放音频。</p>
+
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-info-circle icon"></i>基本信息</h2>
+            <p><i class="fas fa-calendar-day icon"></i> <strong>日期:</strong> <span id="current-date"></span></p>
+            <p><i class="fas fa-cloud-sun icon"></i> <strong>天气:</strong> 夏季建议防晒</p>
+            <p><i class="fas fa-walking icon"></i> <strong>建议装备:</strong></p>
+            <ul class="tips-list">
+                <li>防晒用品</li>
+                <li>舒适运动鞋</li>
+                <li>饮用水</li>
+            </ul>
         </div>
     </div>
-    <script src="js/game.js"></script>
+
+    <div class="section">
+        <h2 class="section-title"><i class="fas fa-subway icon"></i>交通指南</h2>
+        <table class="transport-table">
+            <tr>
+                <th>路线</th>
+                <th>方式</th>
+                <th>时间</th>
+            </tr>
+            <tr>
+                <td>昌邑路站 → 世博文化公园</td>
+                <td>步行</td>
+                <td>约15分钟</td>
+            </tr>
+            <tr>
+                <td>世博文化公园 → 龙阳路麦当劳</td>
+                <td>地铁13号线 → 7号线</td>
+                <td>约20分钟</td>
+            </tr>
+            <tr>
+                <td>龙阳路 → 上海植物园</td>
+                <td>地铁7号线 → 3号线</td>
+                <td>约35分钟</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="grid-container">
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-utensils icon"></i>餐饮推荐</h2>
+            <p><strong>麦当劳(龙阳路店):</strong></p>
+            <ul class="tips-list">
+                <li>汉堡套餐(可选不辣)</li>
+                <li>沙拉轻食</li>
+                <li>冰淇淋甜品</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-exclamation-circle icon"></i>实用提示</h2>
+            <ul class="tips-list">
+                <li>植物园面积较大，建议穿舒适鞋子</li>
+                <li>周末人流较多，建议错峰出行</li>
+                <li>使用"Metro大都会"APP扫码乘地铁</li>
+                <li>可自带简餐在植物园野餐</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title"><i class="fas fa-phone-alt icon"></i>紧急联系</h2>
+        <p><strong>旅游咨询:</strong> 021-12301</p>
+        <p><strong>紧急求助:</strong> 110（警察）/120（急救）</p>
+    </div>
+
+    <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> 打印行程表</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加当前日期
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('current-date').textContent = today.toLocaleDateString('zh-CN', options);
+
+            // 添加打印样式优化
+            const style = document.createElement('style');
+            style.textContent = `
+                @media print {
+                    body { -webkit-print-color-adjust: exact; }
+                    .section { break-inside: avoid; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
 </html>
